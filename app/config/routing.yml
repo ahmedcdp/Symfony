@@ -1,3 +1,7 @@
+cdp_booking:
+    resource: "@CDPBookingBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation

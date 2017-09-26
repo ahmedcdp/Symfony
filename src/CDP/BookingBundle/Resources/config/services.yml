@@ -1,0 +1,4 @@
+services:
+#    cdp_booking.example:
+#        class: CDP\BookingBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
