@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      background-color: #4583E5;
+    }
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 750px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #3A6DBF;
+      height: 100%;
+    }
+    .corps{
+      background-color: white;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #132440;
+      color: white;
+      padding: 15px;
+      height: 100px
+    }
+    header {
+    	background-image: url({{ asset('images/Louvre.jpg') }}); 
+      height: 370px;
+    }
+    .image_presentation {
+      padding-right: 20px;
+      padding-bottom: 5px;
+      justify-content:center;
+      float:left;
+    }
+    .well{
+      background-color: #26497F;
+      color: #FFC44D;
+    }
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media(max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+      header{display: none;}
+    }
+  </style>
+</head>
+<body>
+<nav class="container navbar navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Billetterie en ligne</a></li>
+      </ul>
+  </nav>
+<header class="container bg-primary text-white">
+  <div class="text-center">
+    <h1>Musée du Louvre</h1>
+    <p class="lead">Réservez vos billets pour visiter le musée du Louvre</p>
+  </div>
+</header>
+
+<div class="container text-center">    
+  <div class="row content">
+    <div class="col-sm-9 text-left corps"> 
+    	{% block body %}
+    	{% endblock %}
+    </div>
+    <div class="col-sm-3 sidenav">
+      <div class="well">
+         <h2>Horaires</h2>
+      	<p>Le musée est ouvert tous les jours
+      		de 9h à 18h <br>
+      		Fermé le mardi <br>
+      		et les 1er mai, <br>
+      		1er novembre et 25 décembre
+     	</p>
+
+      <hr>
+      </div>
+      <div class="well">
+        <h2>Tarifs</h2>
+        <div class="text-left">
+        	<h4>Journée :</h4>
+     		<ul class="list-unstyled">
+     			<li><b>Gratuit</b> pour les moins de 4 ans</li>
+     			<li><b>8 €</b> de 4 ans à 12 ans</li> 
+        		<li><b>16 €</b> à partir de 12 ans</li>   
+        		<li><b>12 €</b> pour les plus de 60 ans</li>
+        		<li><b>10 €</b> tarif reduit (étudiant, employé du musée, militaire…)</li>
+      		</ul>
+      		<h4>Demi-journée :</h4>
+      		<ul class="list-unstyled">
+      			<li><b>Gratuit</b> pour les moins de 4 ans</li>
+     			<li><b>4 €</b> de 4 ans à 12 ans</li> 
+        		<li><b>8 €</b> à partir de 12 ans</li>   
+        		<li><b>6 €</b> pour les plus de 60 ans</li>
+        		<li><b>5 €</b> tarif reduit (étudiant, employé du musée, militaire…)</li>
+        	</ul>	
+  		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container text-center">
+  <p>Footer Text</p>
+</footer>
+
+</body>
+</html>
