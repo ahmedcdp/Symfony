@@ -52,26 +52,44 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-  $(document).ready(function() {
+$(document).ready(function() {
     var $container = $('div#cdp_bookingbundle_ticket_visitors');
-    var nb = 3;
-    var index = 0;
-     $('#add_visitor').click(function(e) {
-    	while(index < nb) {
-     	 	addVisitor($container);	
-      	}
-      	e.preventDefault();
-      	return false;
+    var index = $container.find(':input').length;
+    $('#add_visitor').click(function(e) {
+      addVisitor($container);
+      e.preventDefault();
+      return false;
     });
+
+    if (index == 0) {
+      addVisitor($container);
+    } else {
+      $container.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
 
     function addVisitor($container) {
       var template = $container.attr('data-prototype')
         .replace(/__name__label__/g, 'Visiteur n°' + (index+1))
         .replace(/__name__/g, index).replace(/class="required"/g, 'class="required champs_label"')
         .replace("cdp_bookingbundle_ticket_visitors_"+index+"_birthdate","champs_input" );
+
+
       var $prototype = $(template);
+      addDeleteLink($prototype);
       $container.append($prototype);
       index++;
+    }
+
+    function addDeleteLink($prototype) {
+      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+      $prototype.append($deleteLink);
+      $deleteLink.click(function(e) {
+        $prototype.remove();
+        e.preventDefault();
+        return false;
+      });
     }
   });
 </script>

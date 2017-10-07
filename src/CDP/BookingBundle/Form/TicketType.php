@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 class TicketType extends AbstractType
@@ -20,11 +21,16 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', DateType::class)
-        ->add('halfday', CheckboxType::class, array('required' => false))
+        $builder->add('date', DateType::class, array('format' => 'dd MM yyyy'))
+        ->add('halfday', CheckboxType::class, array("label" => "Demi-journée", 'required' => false))
         ->add('number', IntegerType::class)
         ->add('email', TextType::class)
-        ->add('valider', SubmitType::class);
+        ->add('valider', SubmitType::class)
+        ->add('visitors', CollectionType::class, array(
+            'entry_type'=> VisitorType::class,
+            "label" => "Visiteurs",
+            'allow_add' =>true,
+            'allow_delete' => true));
     }
     
     /**

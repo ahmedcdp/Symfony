@@ -3,6 +3,7 @@
 namespace CDP\BookingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Ticket
@@ -49,11 +50,40 @@ class Ticket
      */
     private $email;
 
+    /**
+    * @ORM\ManyToMany(targetEntity="CDP\BookingBundle\Entity\Visitor", cascade={"persist"})
+    */
+    private $visitors;
 
 
     public function __construct()
     {
         $this->date = new \Datetime();
+        $this->visitors = new ArrayCollection();
+    }
+
+    /**
+    * @param Visitor $visitor
+    */
+    public function addVisitor(Visitor $visitor)
+    {
+        $this->visitors[] = $visitor;
+    }
+
+    /**
+    * @param Visitor $visitor
+    */
+    public function removeVisitor(Visitor $visitor)
+    {
+        $this->visitors->removeElement($visitor);
+    }
+
+    /**
+    * @return ArrayCollection
+    */
+    public function getVisitors()
+    {
+        return $this->visitors;
     }
 
     /**
