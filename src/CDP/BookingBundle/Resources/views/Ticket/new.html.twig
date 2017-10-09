@@ -7,7 +7,7 @@
 <h3>Formulaire de réservation</h3>
 
 <div class="well">
-  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+  {{ form_start(form,{'action': path('cdp_booking_add'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
 
   {# Les erreurs générales du formulaire. #}
   {{ form_errors(form) }}
@@ -36,10 +36,6 @@
       {{ form_widget(form.halfday, {'attr': {'class': 'champs_input'}}) }}
   </div>
 
-  {{ form_row(form.visitors) }}
-
-
-  <a href="#" id="add_visitor" class="btn btn-default">Ajouter un visiteur</a>
 
   {{ form_widget(form.valider, {'attr': {'class': 'btn btn-primary'}}) }}
  
@@ -48,32 +44,5 @@
   {{ form_end(form) }}
 
 </div>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    var $container = $('div#cdp_bookingbundle_ticket_visitors');
-    var nb = 3;
-    var index = 0;
-     $('#add_visitor').click(function(e) {
-    	while(index < nb) {
-     	 	addVisitor($container);	
-      	}
-      	e.preventDefault();
-      	return false;
-    });
-
-    function addVisitor($container) {
-      var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Visiteur n°' + (index+1))
-        .replace(/__name__/g, index).replace(/class="required"/g, 'class="required champs_label"')
-        .replace("cdp_bookingbundle_ticket_visitors_"+index+"_birthdate","champs_input" );
-      var $prototype = $(template);
-      $container.append($prototype);
-      index++;
-    }
-  });
-</script>
 
 {% endblock %}

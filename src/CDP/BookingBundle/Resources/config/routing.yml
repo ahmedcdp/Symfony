@@ -5,3 +5,7 @@ cdp_booking_homepage:
 cdp_booking_new:
     path:     /new
     defaults: { _controller: CDPBookingBundle:Ticket:new }
+
+cdp_booking_add:
+    path:     /add
+    defaults: { _controller: CDPBookingBundle:Ticket:add }

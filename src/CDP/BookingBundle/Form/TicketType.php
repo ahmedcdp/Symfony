@@ -25,12 +25,7 @@ class TicketType extends AbstractType
         ->add('halfday', CheckboxType::class, array("label" => "Demi-journée", 'required' => false))
         ->add('number', IntegerType::class)
         ->add('email', TextType::class)
-        ->add('valider', SubmitType::class)
-        ->add('visitors', CollectionType::class, array(
-            'entry_type'=> VisitorType::class,
-            "label" => "Visiteurs",
-            'allow_add' =>true,
-            'allow_delete' => true));
+        ->add('valider', SubmitType::class);     
     }
     
     /**

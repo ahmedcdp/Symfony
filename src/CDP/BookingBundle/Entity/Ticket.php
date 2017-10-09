@@ -41,7 +41,7 @@ class Ticket
      *
      * @ORM\Column(name="number", type="smallint")
      */
-    private $number;
+    private $number=0;
 
     /**
      * @var string

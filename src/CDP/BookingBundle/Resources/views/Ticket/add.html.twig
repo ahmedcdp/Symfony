@@ -1,0 +1,73 @@
+
+
+{% extends "CDPBookingBundle::layout.html.twig" %}
+
+{% block body %}
+
+<h3>Formulaire de réservation</h3>
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}, {'action': path('cdp_booking_add'), 'method': 'POST'})   }}
+
+  {# Les erreurs générales du formulaire. #}
+  {{ form_errors(form) }}
+
+    <p>
+      {# On affiche tous les messages flash dont le nom est « info » #}
+      {% for message in app.session.flashbag.get('notice') %}
+        <p>Message flash : {{ message }}</p>
+      {% endfor %}
+    </p>
+
+
+  <div>
+  <p>Date de r&eacute;servation : {{ ticket.date|date('d-m-Y') }}</p>
+  <p>Email : {{ ticket.email}}</p>
+  {% if ticket.halfday %}
+    <p>Type de billet : demi-journ&eacute;e</p> 
+  {% else %}
+    <p>Type de billet : journ&eacute;e compl&egrave;te</p>
+{% endif %}
+  <p>Nombre de personnes : {{ ticket.number}}</p> 
+  </div>
+
+
+  {{ form_row(form.visitors) }}
+
+
+  {{ form_widget(form.valider, {'attr': {'class': 'btn btn-primary'}}) }}
+ 
+  {{ form_rest(form) }}
+  {{ form_end(form) }}
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var $container = $('div#cdp_bookingbundle_ticket_visitors');
+    var nb = 0;
+    {% if ticket.number is defined %}
+    	 var nb = {{ticket.number}};
+	{% endif %}
+	
+    var index = 0;
+    while(index < nb) {
+     	 addVisitor($container);	
+      }
+      e.preventDefault();
+      return false;
+    function addVisitor($container) {
+      	var template = $container.attr('data-prototype')
+        .replace(/__name__label__/g, '<h3>Visiteur ' + (index+1)+'</h3>')
+        .replace(/__name__/g, index).replace(/class="required"/g, 'class="required champs_label"')
+        .replace("cdp_bookingbundle_ticket_visitors_"+index+"_birthdate","champs_input" );
+      	
+      	var $prototype = $(template);
+      	$container.append($prototype);
+      	$prototype.wrap('<div class="container_visitor"></div>');
+      	index++;
+    }
+  });
+</script>
+
+{% endblock %}
