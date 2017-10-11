@@ -12,6 +12,13 @@
   {# Les erreurs générales du formulaire. #}
   {{ form_errors(form) }}
 
+    <div>
+      {# On affiche tous les messages flash dont le nom est « info » #}
+      {% for message in app.session.flashbag.get('notice') %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+
   <div>
     {{ form_label(form.date, "Date", {'label_attr': {'class': 'champs_label'}}) }}
     {{ form_errors(form.date) }}

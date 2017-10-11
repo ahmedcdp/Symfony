@@ -9,3 +9,7 @@ cdp_booking_new:
 cdp_booking_add:
     path:     /add
     defaults: { _controller: CDPBookingBundle:Ticket:add }
+
+cdp_booking_save:
+    path:     /save
+    defaults: { _controller: CDPBookingBundle:Ticket:save }

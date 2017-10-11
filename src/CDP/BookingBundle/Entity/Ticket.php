@@ -27,6 +27,9 @@ class Ticket
      *
      * @ORM\Column(name="date", type="date")
      */
+     /*
+      @Assert\GreaterThanOrEqual("today")
+     */
     private $date;
 
     /**

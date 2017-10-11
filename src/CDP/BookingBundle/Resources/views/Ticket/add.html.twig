@@ -7,17 +7,17 @@
 <h3>Formulaire de réservation</h3>
 
 <div class="well">
-  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}, {'action': path('cdp_booking_add'), 'method': 'POST'})   }}
+  {{ form_start(form,{'action': path('cdp_booking_save'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
 
   {# Les erreurs générales du formulaire. #}
   {{ form_errors(form) }}
 
-    <p>
+    <div>
       {# On affiche tous les messages flash dont le nom est « info » #}
       {% for message in app.session.flashbag.get('notice') %}
-        <p>Message flash : {{ message }}</p>
+        <p>{{ message }}</p>
       {% endfor %}
-    </p>
+    </div>
 
 
   <div>
@@ -30,6 +30,11 @@
 {% endif %}
   <p>Nombre de personnes : {{ ticket.number}}</p> 
   </div>
+
+{{ form_widget(form.date, { 'attr' : { 'style':'display:none'} }) }}
+{{ form_widget(form.number, { 'attr' : { 'style':'display:none'} }) }}
+{{ form_widget(form.email, { 'attr' : { 'style':'display:none'} }) }}
+{{ form_widget(form.halfday, { 'attr' : { 'style':'display:none'} }) }}
 
 
   {{ form_row(form.visitors) }}
@@ -44,7 +49,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    var $container = $('div#cdp_bookingbundle_ticket_visitors');
+    var $container = $('div#ticket_visitors_visitors');
     var nb = 0;
     {% if ticket.number is defined %}
     	 var nb = {{ticket.number}};
@@ -60,7 +65,7 @@
       	var template = $container.attr('data-prototype')
         .replace(/__name__label__/g, '<h3>Visiteur ' + (index+1)+'</h3>')
         .replace(/__name__/g, index).replace(/class="required"/g, 'class="required champs_label"')
-        .replace("cdp_bookingbundle_ticket_visitors_"+index+"_birthdate","champs_input" );
+        .replace("ticket_visitors_visitors_"+index+"_birthdate","champs_input" );
       	
       	var $prototype = $(template);
       	$container.append($prototype);
