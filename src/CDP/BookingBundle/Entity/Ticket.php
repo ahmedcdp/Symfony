@@ -61,6 +61,7 @@ class Ticket
 
     public function __construct()
     {
+        date_default_timezone_set('Europe/Paris');
         $this->date = new \Datetime();
         $this->visitors = new ArrayCollection();
     }

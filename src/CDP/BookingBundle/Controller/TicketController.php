@@ -43,37 +43,39 @@ class TicketController extends Controller
     if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
     	//on verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
+    	date_default_timezone_set('Europe/Paris');
+    	
     	$sDate=date_format($ticket->getDate(), 'd-m-Y');
-    	 $tDate = explode('-', $sDate);
-    	 $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+    	$tDate = explode('-', $sDate);
+    	$days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
-       $currentDate = date("d-m-Y");
-       $heure = date("H");
+       	$currentDate = date("d-m-Y");
+       	$heure = date("H");
 
-    	 //date('m'),date('d'),date('Y')
-    	 $day = $days[date('w', mktime(0, 0, 0, $tDate[1], $tDate[0], $tDate[2]))];
+    	//date('m'),date('d'),date('Y')
+    	$day = $days[date('w', mktime(0, 0, 0, $tDate[1], $tDate[0], $tDate[2]))];
     	if( $day === "Tuesday" )
     	{
     		$request->getSession()->getFlashBag()->add('notice', 'Le musée est fermé le mardi');
     		return $this->redirectToRoute('cdp_booking_new');
     	}
 
-     if( ( ($tDate[0]==='01') && ( ($tDate[1]==='05') || ($tDate[1]==='11') ) ) || ( ($tDate[0]==='25') && ($tDate[1]==='12') ) )
-      {
-        $request->getSession()->getFlashBag()->add('notice', 'Jour férié, le musée est fermé');
-        return $this->redirectToRoute('cdp_booking_new');
-      }
+     	else if( ( ($tDate[0]==='01') && ( ($tDate[1]==='05') || ($tDate[1]==='11') ) ) || ( ($tDate[0]==='25') && ($tDate[1]==='12') ) )
+      	{
+       	 	$request->getSession()->getFlashBag()->add('notice', 'Jour férié, le musée est fermé');
+        	return $this->redirectToRoute('cdp_booking_new');
+      	}
 
-      // test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
-      else if(($sDate == $currentDate ) && ($heure >= 14))
-      {
-         $request->getSession()->getFlashBag()->add('notice', 'il est plus de 14h');
-          $ticket->setHalfday(true);
-      }
+      	// test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
+      	else if(($sDate == $currentDate ) && ($heure >= 14))
+      	{
+         	$request->getSession()->getFlashBag()->add('notice', 'il est plus de 14h');
+          	$ticket->setHalfday(true);
+      	}
 
 		// on interroge la bdd pour savoir si il reste des billets pour cette date
 		
-		$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
 
 		$formVisitor = $this->get('form.factory')->create(TicketVisitorsType::class, $ticket);
 
@@ -89,7 +91,11 @@ class TicketController extends Controller
 
     $formVisitor = $this->get('form.factory')->create(TicketVisitorsType::class, $ticket);
     if ($request->isMethod('POST') && $formVisitor->handleRequest($request)->isValid()) {
-
+      //sauvegarde en bdd
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($ticket);
+      $em->flush();
+      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée');
       return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('ticket' =>$ticket));
     }
     return $this->redirectToRoute('cdp_booking_new');

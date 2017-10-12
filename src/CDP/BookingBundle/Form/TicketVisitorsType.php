@@ -26,7 +26,7 @@ class TicketVisitorsType extends AbstractType
             'entry_type'=> VisitorType::class,
             "label" => "Visiteurs",
             'allow_add' =>true,
-            'allow_delete' => true)); 
+            'allow_delete' => true, "label" => false)); 
     }
 
     /**
