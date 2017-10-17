@@ -3,6 +3,7 @@
 namespace CDP\BookingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Visitor
@@ -25,6 +26,7 @@ class Visitor
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255)
+     * @Assert\Length(min=2, minMessage = "2 caracteres au minimum")
      */
     private $lastname;
 
@@ -32,6 +34,7 @@ class Visitor
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255)
+     * @Assert\Length(min=2, minMessage = "2 caracteres au minimum")
      */
     private $firstname;
 
@@ -46,6 +49,7 @@ class Visitor
      * @var string
      *
      * @ORM\Column(name="country", type="string", length=255)
+     * @Assert\Country(message = "Code pays sur 2 caracteres")
      */
     private $country;
 
@@ -54,7 +58,7 @@ class Visitor
      *
      * @ORM\Column(name="halfprice", type="boolean")
      */
-    private $halfprice;
+    private $halfprice=false;
 
 
     /**

@@ -12,24 +12,59 @@
   {# Les erreurs générales du formulaire. #}
   {{ form_errors(form) }}
 
-    <div>
-      {# On affiche tous les messages flash dont le nom est « info » #}
-      {% for message in app.session.flashbag.get('notice') %}
-        <div class="flash-notice">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-
+  <div>
+    {# On affiche tous les messages flash dont le nom est « info » #}
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="flash-notice">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="row">
+  <div class="resume col-sm-8">
+    <table class="table table-bordered table-striped table-condensed">
+      <caption>
+        <h4>R&eacute;capitulatif</h4>
+      </caption>
+      <tbody>
+        <tr>
+          <td class="col_label">Date d&eacute;sir&eacute;</td>
+          <td class="col_champ">{{ ticket.date|date("d-m-Y") }}</td>
+        </tr>
+        <tr>
+          <td class="col_label">Email</td>
+          <td class="col_champ">{{ ticket.email }}</td>
+        </tr>
+        <tr>
+          <td class="col_label">Nombre de visiteurs</td>
+          <td class="col_champ">{{ ticket.number }}</td>
+        </tr>
+        <tr>
+          <td class="col_label">Type de billets</td>
+          <td class="col_champ">
+          {% if ticket.halfday %}
+          Demi-journ&eacute;e
+          {% else %}
+          Journ&eacute;e
+          {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-4">
+  </div>
+  </div>
 
 {{ form_widget(form.date, { 'attr' : { 'style':'display:none'} }) }}
 {{ form_widget(form.number, { 'attr' : { 'style':'display:none'} }) }}
 {{ form_widget(form.email, { 'attr' : { 'style':'display:none'} }) }}
 {{ form_widget(form.halfday, { 'attr' : { 'style':'display:none'} }) }}
 
-
-  {{ form_row(form.visitors) }}
-
+{% if form.visitors is defined %}
+   {{ form_row(form.visitors) }}
+{% endif %}
+  
 
   {{ form_widget(form.valider, {'attr': {'class': 'btn btn-primary'}}) }}
  
@@ -40,18 +75,26 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    var $container = $('div#ticket_visitors_visitors');
-    var nb = 0;
-    {% if ticket.number is defined %}
+    var erreurs = {{ haveErrors }};
+    
+      var $container = $('div#ticket_visitors_visitors');
+      var nb = 0;
+      {% if ticket.number is defined %}
     	 var nb = {{ticket.number}};
-	{% endif %}
+	    {% endif %}
 	
-    var index = 0;
-    while(index < nb) {
-     	 addVisitor($container);	
+      var index = 0;
+      while(index < nb) {
+        if(erreurs === false){
+     	    addVisitor($container);
+        }
+        else{
+          modifVisitor($container)
+        }	
       }
       e.preventDefault();
       return false;
+  
     function addVisitor($container) {
       	var template = $container.attr('data-prototype')
         .replace(/__name__label__/g, '<h3>Visiteur ' + (index+1)+'</h3>')
@@ -63,6 +106,16 @@
       	$prototype.wrap('<div class="container_visitor well"></div>');
       	index++;
     }
+    function modifVisitor($container) {
+      var template = "#ticket_visitors_visitors_"+index;
+      var $prototype = $(template);
+      $prototype.parent().addClass('container_visitor well');
+      $prototype.prev().remove();
+      $prototype.before('<h3>Visiteur ' + (index+1)+'</h3>');
+
+      index++;
+    }
+
   });
 </script>
 

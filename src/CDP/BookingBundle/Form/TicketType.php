@@ -34,7 +34,7 @@ class TicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'CDP\BookingBundle\Entity\Ticket'
+            'data_class' => 'CDP\BookingBundle\Entity\Ticket',
         ));
     }
 

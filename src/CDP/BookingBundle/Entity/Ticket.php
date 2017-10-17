@@ -4,6 +4,7 @@ namespace CDP\BookingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ticket
@@ -26,9 +27,7 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
-     */
-     /*
-      @Assert\GreaterThanOrEqual("today")
+     * @Assert\GreaterThanOrEqual("today", message = "Veuillez entrer une date valide")
      */
     private $date;
 
@@ -43,6 +42,12 @@ class Ticket
      * @var int
      *
      * @ORM\Column(name="number", type="smallint")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 1000,
+     *      minMessage = "Vous devez selectionner au moins un billet",
+     *      maxMessage = "Max 1000 billets"
+     * )
      */
     private $number=0;
 
@@ -50,12 +55,15 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\Length(max=255, maxMessage = "Max 255 caracteres")
+     * @Assert\Email(message = "Veuillez entrer une adresse email valide")
      */
     private $email;
 
     /**
     * @ORM\ManyToMany(targetEntity="CDP\BookingBundle\Entity\Visitor", cascade={"persist"})
-    */
+     * @Assert\Valid
+     */
     private $visitors;
 
 
@@ -194,6 +202,41 @@ class Ticket
     public function getEmail()
     {
         return $this->email;
+    }
+
+    //verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
+    //retourne mardi, ferie ou ok
+    public function dateValid(){
+
+     //verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
+        
+        $sDate=date_format($this->date, 'd-m-Y');
+        $tDate = explode('-', $sDate);
+        $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+
+        $currentDate = date("d-m-Y");
+        $heure = date("H");
+
+        //date('m'),date('d'),date('Y')
+        $day = $days[date('w', mktime(0, 0, 0, $tDate[1], $tDate[0], $tDate[2]))];
+        if( $day === "Tuesday" )
+        {
+            return "tuesday";
+        }
+
+        else if( ( ($tDate[0]==='01') && ( ($tDate[1]==='05') || ($tDate[1]==='11') ) ) || ( ($tDate[0]==='25') && ($tDate[1]==='12') ) )
+      {
+        return "holiday";
+      }
+
+      // test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
+      else if(($sDate == $currentDate ) && ($heure >= 14))
+      {
+        return "halfday";
+      }
+      else{
+        return "ok";
+      }
     }
 }
 
