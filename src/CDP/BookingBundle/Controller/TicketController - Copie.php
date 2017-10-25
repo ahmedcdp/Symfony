@@ -43,15 +43,47 @@ class TicketController extends Controller
   	$ticket = new Ticket();
   	$form = $this->get('form.factory')->create(TicketType::class, $ticket);
     if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-  //      $session = $request->getSession();
-   //     $session->set('etape1', $ticket);
-    
-        // ajout colletor a form
 
-		    $formVisitor = $this->get('form.factory')->create(TicketVisitorsType::class, $ticket);
-		    return $this->render('CDPBookingBundle:Ticket:add.html.twig', array('form' => $formVisitor->createView(), 'ticket' =>$ticket, 'haveErrors' =>"false"));
-    }     
-    return $this->render('CDPBookingBundle:Ticket:new.html.twig', array('form' => $form->createView()));
+      //on verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
+    	date_default_timezone_set('Europe/Paris');
+    	
+    	
+    	if( $ticket->dateValid() === "tuesday" )
+    	{
+    		$request->getSession()->getFlashBag()->add('notice', 'Le musée est fermé le mardi');
+    		return $this->redirectToRoute('cdp_booking_new');
+    	}
+
+     	else if( $ticket->dateValid() === "holiday" )
+      	{
+       		$request->getSession()->getFlashBag()->add('notice', 'Jour férié, le musée est fermé');
+        	return $this->redirectToRoute('cdp_booking_new');
+      	}
+
+      	// test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
+     	else if($ticket->dateValid() === "halfday")
+      	{
+       	 	$request->getSession()->getFlashBag()->add('notice', 'Après 14h, votre billet sera un billet demi-journée');
+        	$ticket->setHalfday(true);
+      	}
+
+		// on interroge la bdd pour savoir si il reste des billets pour cette date
+      	$maxBillets = $this->container->getParameter('max-billets');
+      	$repository = $this->getDoctrine()->getManager()->getRepository('CDPBookingBundle:Ticket');
+
+ 		$nbBillets = $repository->countByDate($ticket->getDate());
+ 		$nbBilletDispo = $maxBillets - $nbBillets;
+ 		if($nbBilletDispo <= 0)
+      	{
+       	 	$request->getSession()->getFlashBag()->add('notice', 'Plus de place disponible pour cette date');
+        	return $this->redirectToRoute('cdp_booking_new');
+      	}
+
+		 $formVisitor = $this->get('form.factory')->create(TicketVisitorsType::class, $ticket);
+		 return $this->render('CDPBookingBundle:Ticket:add.html.twig', array('form' => $formVisitor->createView(), 'ticket' =>$ticket, 'haveErrors' =>"false"));
+
+    }
+        return $this->render('CDPBookingBundle:Ticket:new.html.twig', array('form' => $form->createView()));
   }
 
 

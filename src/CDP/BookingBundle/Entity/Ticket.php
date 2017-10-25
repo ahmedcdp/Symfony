@@ -5,6 +5,8 @@ namespace CDP\BookingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use CDP\BookingBundle\Validator\DateDispo;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Ticket
@@ -28,6 +30,7 @@ class Ticket
      *
      * @ORM\Column(name="date", type="date")
      * @Assert\GreaterThanOrEqual("today", message = "Veuillez entrer une date valide")
+     * @DateDispo()
      */
     private $date;
 
@@ -66,6 +69,15 @@ class Ticket
      */
     private $visitors;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="prix", type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 1000000)
+     */
+    private $prixTotal=0;
 
     public function __construct()
     {
@@ -204,39 +216,79 @@ class Ticket
         return $this->email;
     }
 
-    //verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
-    //retourne mardi, ferie ou ok
-    public function dateValid(){
+    //calcul du prix total des billets
+    public function calcPrixTotal()
+    {
+        foreach ($this->visitors as $visitor)
+        {
+            $age = $visitor->getAge();
 
-     //verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)
+            
+            if($age<4){$prix = 0;}
+            else if($age>=4 && $age<12){$prix = 8;}
+            else{
+                if($visitor->getHalfprice() === true){$prix=10;}
+                else{
+                    if($age>=12 && $age<=60){$prix = 16;}
+                    else if($age>60){$prix = 12;}
+                }
+            }
+            if($this->halfday === true){$prix = $prix/2;}
+            $this->prixTotal+=$prix;
+        }
+    
+    }
+    public function getPrixTotal()
+    {
+        return $this->prixTotal;
+    }
+    public function setPrixTotal($prixTotal)
+    {
+        $this->prixTotal = $prixTotal;
+    }
+
+
+    /**
+    * @Assert\Callback
+    */
+    public function isDateValid(ExecutionContextInterface $context) 
+    {
+        date_default_timezone_set('Europe/Paris');
         
+         //verifie si jour ouvert (ferme les mardis, 01/05, 01/11, 25/12)       
         $sDate=date_format($this->date, 'd-m-Y');
         $tDate = explode('-', $sDate);
-        $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-
         $currentDate = date("d-m-Y");
         $heure = date("H");
+        $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
         //date('m'),date('d'),date('Y')
         $day = $days[date('w', mktime(0, 0, 0, $tDate[1], $tDate[0], $tDate[2]))];
         if( $day === "Tuesday" )
         {
-            return "tuesday";
+            $resultat = "tuesday";
+        }
+        else if( ( ($tDate[0]==='01') && ( ($tDate[1]==='05') || ($tDate[1]==='11') ) ) || ( ($tDate[0]==='25') && ($tDate[1]==='12') ) )
+        {
+            $resultat = "holiday";
+        }
+        else if(($sDate === $currentDate ) && ($heure > 18)){
+            $resultat = "close";
+        }
+        else
+        {
+            $resultat = "ok";
         }
 
-        else if( ( ($tDate[0]==='01') && ( ($tDate[1]==='05') || ($tDate[1]==='11') ) ) || ( ($tDate[0]==='25') && ($tDate[1]==='12') ) )
-      {
-        return "holiday";
-      }
+        if ($resultat != "ok" )
+        {
+            $context->buildViolation('Musée fermée')->atPath('date')->addViolation();
+        }
 
-      // test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
-      else if(($sDate == $currentDate ) && ($heure >= 14))
-      {
-        return "halfday";
-      }
-      else{
-        return "ok";
-      }
+        // test si il est plus de 14h pour un billet commande pour le meme jour en option pleine journee
+        if (($resultat === "ok") && ($sDate === $currentDate ) && ($heure >= 14) && !$this->getHalfday()) {
+            $context->buildViolation('Il est plus de 14h veuillez sélectionner demi-journée')->atPath('halfday')->addViolation();
+        }
     }
 }
 

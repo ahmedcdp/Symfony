@@ -1,0 +1,54 @@
+
+
+{% extends "CDPBookingBundle::layout.html.twig" %}
+
+{% block body %}
+
+<h3>Récapitulatif</h3>
+
+<div class="well">
+
+  <div>
+  	<p>Prix total : {{ ticket.prixTotal}}eurs</p> 
+    <p>Date de r&eacute;servation : {{ ticket.date|date('d-m-Y') }}</p>
+    <p>Email : {{ ticket.email}}</p>
+    {% if ticket.halfday %}
+     <p>Type de billet : demi-journ&eacute;e</p> 
+    {% else %}
+      <p>Type de billet : journ&eacute;e compl&egrave;te</p>
+    {% endif %}
+    <p>Nombre de personnes : {{ ticket.number}}</p>
+    {% set index = 1 %}
+     {% for visitor in ticket.visitors %}
+     	<h3>Visiteur{{index}}</h3>
+        <p>Nom : {{ visitor.firstname}}</p> 
+    	<p>prenom : {{ visitor.lastname}}</p> 
+    	<hr>
+    	{% set index = index+1 %}
+    {% endfor %}
+
+  </div>
+
+  <div>
+  	{{ form_start(form,{'action': path('cdp_booking_save'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
+
+  	{# Les erreurs générales du formulaire. #}
+  	{{ form_errors(form) }}
+
+
+  	{{ form_widget(form.prixTotal, { 'attr' : { 'style':'display:none'} }) }}
+	{{ form_widget(form.date, { 'attr' : { 'style':'display:none'} }) }}
+	{{ form_widget(form.number, { 'attr' : { 'style':'display:none'} }) }}
+	{{ form_widget(form.email, { 'attr' : { 'style':'display:none'} }) }}
+	{{ form_widget(form.halfday, { 'attr' : { 'style':'display:none'} }) }}
+ 	{% if form.visitors is defined %}
+   		{{ form_row(form.visitors) }}
+	{% endif %}
+  	{{ form_widget(form.valider, {'attr': {'class': 'btn btn-primary'}}) }}
+ 
+  	{{ form_rest(form) }}
+  	{{ form_end(form) }}
+  </div>
+
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class TicketVisitorsType extends AbstractType
+class TicketPrixType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,7 +28,9 @@ class TicketVisitorsType extends AbstractType
                 'allow_add' =>true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label' => false)); 
+                'mapped' => false,
+                'label' => false))
+                ->add('prixTotal',IntegerType::class);
     }
 
     /**

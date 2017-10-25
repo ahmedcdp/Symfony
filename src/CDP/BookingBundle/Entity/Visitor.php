@@ -60,6 +60,15 @@ class Visitor
      */
     private $halfprice=false;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="age", type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 200)
+     */
+    private $age;
 
     /**
      * Get id
@@ -189,6 +198,19 @@ class Visitor
     public function getHalfprice()
     {
         return $this->halfprice;
+    }
+
+    public function getAge()
+    {
+        date_default_timezone_set('Europe/Paris');
+        $date = new \Datetime();
+        $dateAge = $date->diff($this->birthdate);
+        $this->age = $dateAge->format('%y');
+        return $this->age;
+    }
+    public function setAge()
+    {
+        $this->age = $age;
     }
 }
 

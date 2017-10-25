@@ -1,4 +1,6 @@
 services:
-#    cdp_booking.example:
-#        class: CDP\BookingBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    cdp_booking.validator.datedispo:
+        class: CDP\BookingBundle\Validator\DateDispoValidator
+        arguments: ["@request_stack", "@doctrine.orm.entity_manager", "@service_container"]
+        tags:
+            - { name: validator.constraint_validator, alias: cdp_booking_datedispo }
