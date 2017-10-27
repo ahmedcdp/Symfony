@@ -219,6 +219,7 @@ class Ticket
     //calcul du prix total des billets
     public function calcPrixTotal()
     {
+        $this->prixTotal=0;
         foreach ($this->visitors as $visitor)
         {
             $age = $visitor->getAge();

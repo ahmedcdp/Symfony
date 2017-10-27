@@ -5,6 +5,14 @@
 {% block body %}
 
 <h3>Récapitulatif</h3>
+    <div>
+        {# On affiche tous les messages flash dont le nom est « info » #}
+        {% for message in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
 
 <div class="well">
 
@@ -26,29 +34,28 @@
     	<hr>
     	{% set index = index+1 %}
     {% endfor %}
-
+      {% set prix = ticket.prixTotal * 100 %}
   </div>
-
-  <div>
-  	{{ form_start(form,{'action': path('cdp_booking_save'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
-
-  	{# Les erreurs générales du formulaire. #}
-  	{{ form_errors(form) }}
-
-
-  	{{ form_widget(form.prixTotal, { 'attr' : { 'style':'display:none'} }) }}
-	{{ form_widget(form.date, { 'attr' : { 'style':'display:none'} }) }}
-	{{ form_widget(form.number, { 'attr' : { 'style':'display:none'} }) }}
-	{{ form_widget(form.email, { 'attr' : { 'style':'display:none'} }) }}
-	{{ form_widget(form.halfday, { 'attr' : { 'style':'display:none'} }) }}
- 	{% if form.visitors is defined %}
-   		{{ form_row(form.visitors) }}
-	{% endif %}
-  	{{ form_widget(form.valider, {'attr': {'class': 'btn btn-primary'}}) }}
- 
-  	{{ form_rest(form) }}
-  	{{ form_end(form) }}
-  </div>
-
 </div>
+
+    <div id="status">
+
+
+        <form action="{{ path('cdp_booking_save') }}" method="POST">
+            <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="pk_test_0BHLlO0kypTdeYuLgb4eRVpj"
+                    data-amount="{{ prix}}"
+                    data-label="Payer"
+                    data-name="Stripe"
+                    data-description=""
+                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                    data-locale="auto"
+                    data-email="{{ ticket.email}}"
+                    data-zip-code="false"
+                    data-currency="eur">
+            </script>
+        </form>
+    </div>
+
 {% endblock %}

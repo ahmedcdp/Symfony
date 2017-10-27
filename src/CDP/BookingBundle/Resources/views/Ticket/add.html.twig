@@ -56,11 +56,6 @@
   </div>
   </div>
 
-{{ form_widget(form.date, { 'attr' : { 'style':'display:none'} }) }}
-{{ form_widget(form.number, { 'attr' : { 'style':'display:none'} }) }}
-{{ form_widget(form.email, { 'attr' : { 'style':'display:none'} }) }}
-{{ form_widget(form.halfday, { 'attr' : { 'style':'display:none'} }) }}
-
 {% if form.visitors is defined %}
    {{ form_row(form.visitors) }}
 {% endif %}

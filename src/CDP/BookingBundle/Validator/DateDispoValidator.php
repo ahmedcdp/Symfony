@@ -33,7 +33,11 @@ class DateDispoValidator extends ConstraintValidator
  		$nbBilletDispo = $maxBillets - $nbBillets;
  		if($nbBilletDispo <= 0)
     	{
-       		$this->context->addViolation($constraint->message);
+            $nb_errors = $this->context->getViolations()->count();
+
+            if ($nb_errors === 0) {
+                $this->context->addViolation($constraint->message);
+            }
     	}
 	}
 }
