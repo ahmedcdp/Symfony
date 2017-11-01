@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Musée du Louvre</title>
+    <meta charset="utf-8">
+    <style>
+        body{
+            background-color: #4583E5;
+        }
+        table{
+            border-collapse: collapse;
+            width: 60%;
+            font-size: medium;
+        }
+        td{
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            border: 1px solid black;
+        }
+        .col_label{
+            width: 40%;
+        }
+        .col_champ{
+            width: 60%;
+        }
+        .col_space{
+            width: 100%;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+            <table>
+                <caption>
+                    <h4>Votre Billet : </h4>
+                </caption>
+                <tbody>
+                    <tr>
+                        <td class="col_label">Ticket ID : </td>
+                        <td class="col_champ">{{ ticket.ticketId }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col_label">Date d&eacute;sir&eacute;</td>
+                        <td class="col_champ">{{ ticket.date|date("d-m-Y") }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col_label">Email</td>
+                        <td class="col_champ">{{ ticket.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col_label">Nombre de visiteurs</td>
+                        <td class="col_champ">{{ ticket.number }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col_label">Type de billets</td>
+                        <td class="col_champ">
+                            {% if ticket.halfday %}
+                                Demi-journ&eacute;e
+                            {% else %}
+                                Journ&eacute;e
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% set index = 1 %}
+                    {% for visitor in ticket.visitors %}
+                        <tr>
+                            <td colspan=2 class="col_space"></td>
+                        </tr>
+                        <tr>
+                            <td class="col_label">Visiteur</td>
+                            <td class="col_champ">{{index}}</td>
+                        </tr>
+                        <tr>
+                            <td class="col_label">Nom</td>
+                            <td class="col_champ">{{ visitor.firstname}}</td>
+                        </tr>
+                        <tr>
+                            <td class="col_label">Prenom</td>
+                            <td class="col_champ">{{ visitor.lastname}}</td>
+                        </tr>
+                        <tr>
+                            <td class="col_label">Date de naissance</td>
+                            <td class="col_champ">{{ visitor.birthdate|date("d-m-Y")}}</td>
+                        </tr>
+                        <tr>
+                            <td class="col_label">Demi-tarif</td>
+                            <td class="col_champ">
+                                {% if visitor.halfprice %}
+                                    Oui
+                                {% else %}
+                                    Non
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% set index = index+1 %}
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+
+</body>
+</html>

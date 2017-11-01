@@ -7,7 +7,7 @@
 <h3>Formulaire de réservation</h3>
 
 <div>
-  {{ form_start(form,{'action': path('cdp_booking_resume'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
+  {{ form_start(form,{'action': path('cdp_booking_add'), 'method': 'POST'} , {'attr': {'class': 'form-horizontal'}})   }}
 
   {# Les erreurs générales du formulaire. #}
   {{ form_errors(form) }}
@@ -70,7 +70,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    var erreurs = {{ haveErrors }};
+    var erreurs = false;
     
       var $container = $('div#ticket_visitors_visitors');
       var nb = 0;
@@ -80,12 +80,7 @@
 	
       var index = 0;
       while(index < nb) {
-        if(erreurs === false){
      	    addVisitor($container);
-        }
-        else{
-          modifVisitor($container)
-        }	
       }
       e.preventDefault();
       return false;
@@ -101,16 +96,6 @@
       	$prototype.wrap('<div class="container_visitor well"></div>');
       	index++;
     }
-    function modifVisitor($container) {
-      var template = "#ticket_visitors_visitors_"+index;
-      var $prototype = $(template);
-      $prototype.parent().addClass('container_visitor well');
-      $prototype.prev().remove();
-      $prototype.before('<h3>Visiteur ' + (index+1)+'</h3>');
-
-      index++;
-    }
-
   });
 </script>
 

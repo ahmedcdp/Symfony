@@ -73,11 +73,15 @@ class Ticket
      * @var int
      *
      * @ORM\Column(name="prix", type="integer")
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 1000000)
      */
     private $prixTotal=0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ticket_id", type="string", length=255)
+     */
+    private $ticketId;
 
     public function __construct()
     {
@@ -214,6 +218,20 @@ class Ticket
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTicketId()
+    {
+        return $this->ticketId;
+    }
+
+
+    public function generatedTicketId()
+    {
+        $this->ticketId = md5(uniqid(rand(), true));
     }
 
     //calcul du prix total des billets

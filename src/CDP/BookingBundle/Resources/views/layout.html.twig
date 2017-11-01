@@ -14,6 +14,7 @@
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
+        padding-left: 0px;
     }
     label {
       width: 20%;
@@ -65,6 +66,18 @@
     .col_champ{
       width: 60%;
     }
+    .col_space{
+        width: 100%;
+        background-color: gray;
+    }
+    .navbar-brand {
+        padding: 0px;
+    }
+    .navbar-brand>img {
+        height: 100%;
+        padding: 0px;
+        width: auto;
+    }
     /* Set black background color, white text and some padding */
     footer {
       background-color: #132440;
@@ -99,12 +112,14 @@
 </head>
 <body>
 <nav class="container navbar navbar-inverse">
+    <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Logo</a>
+      <a class="navbar-brand" href={{ path('cdp_booking_homepage')}}><img class ="logo" src ="{{ asset('images/logo-louvre.jpg') }}" alt="logo"></a>
     </div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Billetterie en ligne</a></li>
+        <li class="active"><a href={{ path('cdp_booking_new')}}>Billetterie en ligne</a></li>
       </ul>
+    </div>
   </nav>
 <header class="container bg-primary text-white">
   <div class="text-center">
