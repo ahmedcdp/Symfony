@@ -50,7 +50,7 @@ class TicketController extends Controller
       return $this->render('CDPBookingBundle:Ticket:add.html.twig', array('form' => $formVisitor->createView(), 'ticket' => $ticket));
   }
 
-
+/*
   public function resumeAction(Request $request)
   {
       $session = $request->getSession();
@@ -69,7 +69,7 @@ class TicketController extends Controller
         return $this->render('CDPBookingBundle:Ticket:resume.html.twig', array('ticket' =>$ticket));
   }
 
-/*
+*/
     public function resumeAction(Request $request)
     {
         $session = $request->getSession();
@@ -96,10 +96,11 @@ class TicketController extends Controller
         $this->get('mailer')->send($message);
         $title = "Confirmation de paiement";
         $msg = "Payement validé, Nous vous remercions pour votre commande";
-        return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('title' => $title, 'msg' => $msg, 'isOk' => 'true'));
+        return $this->redirectToRoute('cdp_booking_new');
+      //  return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('title' => $title, 'msg' => $msg, 'isOk' => 'true'));
     }
 
-*/
+
 
 
   public function saveAction(Request $request)

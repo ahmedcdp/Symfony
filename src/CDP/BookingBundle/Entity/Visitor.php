@@ -200,7 +200,7 @@ class Visitor
         return $this->halfprice;
     }
 
-    public function getAge()
+    public function calcAge()
     {
         date_default_timezone_set('Europe/Paris');
         $date = new \Datetime();
@@ -208,7 +208,15 @@ class Visitor
         $this->age = $dateAge->format('%y');
         return $this->age;
     }
-    public function setAge()
+
+    /**
+     * @return int
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+    public function setAge($age)
     {
         $this->age = $age;
     }

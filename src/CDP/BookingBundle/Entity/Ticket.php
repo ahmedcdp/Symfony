@@ -240,7 +240,7 @@ class Ticket
         $this->prixTotal=0;
         foreach ($this->visitors as $visitor)
         {
-            $age = $visitor->getAge();
+            $age = $visitor->calcAge();
 
             
             if($age<4){$prix = 0;}
@@ -255,6 +255,7 @@ class Ticket
             if($this->halfday === true){$prix = $prix/2;}
             $this->prixTotal+=$prix;
         }
+        return $this->prixTotal;
     
     }
     public function getPrixTotal()

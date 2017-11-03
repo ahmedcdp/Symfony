@@ -4,7 +4,7 @@ namespace CDP\BookingBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class TicketControllerTest extends WebTestCase
 {
     public function testIndex()
     {
@@ -12,6 +12,6 @@ class DefaultControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/');
 
-        $this->assertContains('Hello World', $client->getResponse()->getContent());
+        $this->assertContains('Bienvenue', $client->getResponse()->getContent());
     }
 }
