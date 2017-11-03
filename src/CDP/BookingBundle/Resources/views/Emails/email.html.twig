@@ -13,22 +13,27 @@
             font-size: medium;
         }
         td{
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-bottom: 5px;
-            padding-top: 5px;
             border: 1px solid black;
         }
         .col_label{
             width: 40%;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 5px;
+            padding-top: 5px;
         }
         .col_champ{
             width: 60%;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 5px;
+            padding-top: 5px;
         }
         .col_space{
             width: 100%;
             background-color: gray;
         }
+
     </style>
 </head>
 <body>
@@ -40,12 +45,20 @@
                 </caption>
                 <tbody>
                     <tr>
+                        <td class="col_label"><img class ="logo" src ="{{ cid }}" alt="logo"></td>
+                        <td class="col_champ"><h2 class ="titre_billet"> Billet à presenter </h2> </td>
+                    </tr>
+                    <tr>
                         <td class="col_label">Ticket ID : </td>
                         <td class="col_champ">{{ ticket.ticketId }}</td>
                     </tr>
                     <tr>
-                        <td class="col_label">Date d&eacute;sir&eacute;</td>
+                        <td class="col_label">Date de réservation</td>
                         <td class="col_champ">{{ ticket.date|date("d-m-Y") }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col_label">Prix du billet</td>
+                        <td class="col_champ">{{ ticket.prixTotal}} eurs</td>
                     </tr>
                     <tr>
                         <td class="col_label">Email</td>

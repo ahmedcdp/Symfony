@@ -73,33 +73,30 @@ class TicketController extends Controller
     public function resumeAction(Request $request)
     {
         $session = $request->getSession();
-        if(!$session->has('etape2')){
+        if (!$session->has('etape2')) {
             return $this->redirectToRoute('cdp_booking_new');
         }
         $ticket = $session->get('etape2');
-        $session->remove('etape2');
 
-
-        $formVisitor = $this->get('form.factory')->create(TicketVisitorsType::class, $ticket);
-        if ($request->isMethod('POST') && $formVisitor->handleRequest($request)->isValid()) {
-            $ticket->calcPrixTotal();
-            $prix = $ticket->getPrixTotal();
-            if($prix ===0){
-                $session->getFlashBag()->add('notice', 'Veuillez ajouter un adulte pour accompagner les enfants');
-                return $this->redirectToRoute('cdp_booking_new');
-            }
-            $session->set('etape3', $ticket);
-            $ticket->generatedTicketId();
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Some Subject')
-                ->setFrom('admin@cdpdev.fr')
-                ->setTo('ahmedsim.amk@gmail.com')
-                ->setBody($this->renderView('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $ticket)),'text/html');
-            $this->get('mailer')->send($message);
-            return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('ticket' =>$ticket));
+        $ticket->calcPrixTotal();
+        $prix = $ticket->getPrixTotal();
+        if ($prix === 0) {
+            $session->getFlashBag()->add('notice', 'Veuillez ajouter un adulte pour accompagner les enfants');
+            return $this->redirectToRoute('cdp_booking_new');
         }
-        return $this->render('CDPBookingBundle:Ticket:add.html.twig', array('form' => $formVisitor->createView(), 'ticket' =>$ticket, 'haveErrors' =>"true"));
+        $session->set('etape3', $ticket);
+        $ticket->generatedTicketId();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Some Subject')
+            ->setFrom('admin@cdpdev.fr')
+            ->setTo('ahmedsim.amk@gmail.com');
+        $cid = $message->embed(\Swift_Image::fromPath('images/logo-louvre.jpg'));
+        $message->setBody($this->renderView('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $ticket, 'cid'=>$cid)), 'text/html');
+        $this->get('mailer')->send($message);
+        $title = "Confirmation de paiement";
+        $msg = "Payement validé, Nous vous remercions pour votre commande";
+        return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('title' => $title, 'msg' => $msg, 'isOk' => 'true'));
     }
 
 */
@@ -151,8 +148,9 @@ class TicketController extends Controller
       $message = \Swift_Message::newInstance()
           ->setSubject('Votre billet')
           ->setFrom($emailFrom)
-          ->setTo($emailTo)
-          ->setBody($this->renderView('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $ticket)),'text/html');
+          ->setTo($emailTo);
+      $cid = $message->embed(\Swift_Image::fromPath('images/logo-louvre.jpg'));
+      $message->setBody($this->renderView('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $ticket, 'cid'=>$cid)), 'text/html');
       $this->get('mailer')->send($message);
       return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('title' =>$title, 'msg' =>$msg, 'isOk'=>'true'));
 

@@ -24,7 +24,7 @@ class VisitorType extends AbstractType
         ->add('firstname', TextType::class, array("label" => "Prenom"))
         ->add('birthdate', BirthdayType::class, array("label" => "Date de naissance", 'format' => 'dd MM yyyy', 'data' =>new \Datetime()))
         ->add('country', CountryType::class, array("label" => "Pays",  "preferred_choices" => array("FR")))
-        ->add('halfprice', CheckboxType::class, array("label" => "Demi-tarif", 'required' => false));
+        ->add('halfprice', CheckboxType::class, array("label" => "Demi-tarif (pièces justificatives à présenter le jour de la visite)", 'required' => false));
     }
     
     /**

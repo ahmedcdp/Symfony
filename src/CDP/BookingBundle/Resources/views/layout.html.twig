@@ -78,12 +78,24 @@
         padding: 0px;
         width: auto;
     }
+    form ul{
+        list-style-type: none;
+        color: red;
+        padding-left: 0;
+    }
     /* Set black background color, white text and some padding */
     footer {
       background-color: #132440;
       color: white;
       padding: 15px;
       height: 100px
+    }
+    .mentions{
+        padding-top: 30px;
+    }
+    a:link,a:visited,a:hover,a:active{
+        text-decoration: none;
+        color: white;
     }
     header {
     	background-image: url({{ asset('images/Louvre.jpg') }}); 
@@ -172,7 +184,9 @@
 </div>
 
 <footer class="container text-center">
-  <p>Footer Text</p>
+    <div class ="mentions">
+        <a href="#">mentions légales</a>
+    </div>
 </footer>
 
 </body>
