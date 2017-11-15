@@ -17,15 +17,16 @@
         padding-left: 0px;
     }
     label {
-      width: 20%;
+      width: 50%;
       margin-top: 20px;
       display: block;
     }
-    input, #champs_input, .champs_input{
-      width: 30%;
+    input, #champs_input, .champs_input, .champs_country{
+      width: 50%;
       margin-top: 20px;
       display: block;
     }
+
     input[type="checkbox"]{
       margin-top: 20px;
       margin-left: 0px;
@@ -70,18 +71,31 @@
         width: 100%;
         background-color: gray;
     }
+    .col_space_resume{
+        width: 100%;
+    }
+    #status{
+        margin-bottom: 30px;
+    }
     .navbar-brand {
         padding: 0px;
     }
     .navbar-brand>img {
         height: 100%;
         padding: 0px;
-        width: auto;
+        width: 160px;
+    }
+    .lien_form{
+        width: 160px;
     }
     form ul{
         list-style-type: none;
         color: red;
         padding-left: 0;
+    }
+    .bouton_recom{
+        margin-top: 30px;
+        text-align: center;
     }
     /* Set black background color, white text and some padding */
     footer {
@@ -93,7 +107,7 @@
     .mentions{
         padding-top: 30px;
     }
-    a:link,a:visited,a:hover,a:active{
+    lien_mentions:link,lien_mentions:visited,lien_mentions:hover,lien_mentions:active{
         text-decoration: none;
         color: white;
     }
@@ -117,6 +131,16 @@
         height: auto;
         padding: 15px;
       }
+        label {
+            width: 80%;
+            margin-top: 20px;
+            display: block;
+        }
+        input, #champs_input, .champs_input, .champs_country{
+            width: 80%;
+            margin-top: 20px;
+            display: block;
+        }
       .row.content {height:auto;} 
       header{display: none;}
     }
@@ -125,11 +149,11 @@
 <body>
 <nav class="container navbar navbar-inverse">
     <div class="container-fluid">
-    <div class="navbar-header">
+    <div class="navbar-header lien_logo">
       <a class="navbar-brand" href={{ path('cdp_booking_homepage')}}><img class ="logo" src ="{{ asset('images/logo-louvre.jpg') }}" alt="logo"></a>
     </div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href={{ path('cdp_booking_new')}}>Billetterie en ligne</a></li>
+        <li class="active lien_form"><a href={{ path('cdp_booking_new')}}>Billetterie en ligne</a></li>
       </ul>
     </div>
   </nav>
@@ -167,7 +191,7 @@
      			<li><b>8 €</b> de 4 ans à 12 ans</li> 
         		<li><b>16 €</b> à partir de 12 ans</li>   
         		<li><b>12 €</b> pour les plus de 60 ans</li>
-        		<li><b>10 €</b> tarif reduit (étudiant, employé du musée, militaire…)</li>
+        		<li><b>10 €</b> tarif réduit (étudiant, employé du musée, militaire…)</li>
       		</ul>
       		<h4>Demi-journée :</h4>
       		<ul class="list-unstyled">
@@ -175,7 +199,7 @@
      			<li><b>4 €</b> de 4 ans à 12 ans</li> 
         		<li><b>8 €</b> à partir de 12 ans</li>   
         		<li><b>6 €</b> pour les plus de 60 ans</li>
-        		<li><b>5 €</b> tarif reduit (étudiant, employé du musée, militaire…)</li>
+        		<li><b>5 €</b> tarif réduit (étudiant, employé du musée, militaire…)</li>
         	</ul>	
   		</div>
       </div>
@@ -185,7 +209,7 @@
 
 <footer class="container text-center">
     <div class ="mentions">
-        <a href="#">mentions légales</a>
+        <a class="lien_mentions" href="#">mentions légales</a>
     </div>
 </footer>
 

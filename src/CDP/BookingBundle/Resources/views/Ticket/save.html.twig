@@ -4,13 +4,17 @@
 
 {% block body %}
 
-<h3>Récapitulatif</h3>
-
 <div class="well">
     <H1>{{ title }}</H1>
     <H3>{{ msg}}</H3>
     {% if isOk == false %}
-        <a href={{ path('cdp_booking_resume')}}>Recommencez</a>
+        <div class="bouton_recom">
+            <a href={{ path('cdp_booking_resume')}}>Cliquer ici pour recommencez</a>
+        </div>
+    {% else %}
+        <div class="bouton_recom">
+            <a href={{ path('cdp_booking_homepage')}}>Retour à l'accueil</a>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

@@ -1,6 +1,18 @@
 services:
     cdp_booking.validator.datedispo:
         class: CDP\BookingBundle\Validator\DateDispoValidator
-        arguments: ["@request_stack", "@doctrine.orm.entity_manager", "@service_container"]
+        arguments: ["@request_stack", "@doctrine.orm.entity_manager", "%max-billets%" ]
         tags:
             - { name: validator.constraint_validator, alias: cdp_booking_datedispo }
+
+    cdp_booking.price:
+        class: CDP\BookingBundle\Services\Price
+        arguments: ["@session"]
+
+    cdp_booking.validpayment:
+            class: CDP\BookingBundle\Services\ValidPayment
+            arguments: ["@session", "@doctrine.orm.entity_manager", "%mailer_user%", "@mailer", "@templating"]
+
+    cdp_booking.stripepayment:
+            class: CDP\BookingBundle\Services\StripePayment
+            arguments: ["@session", "@request_stack", "%key_secret%" ]

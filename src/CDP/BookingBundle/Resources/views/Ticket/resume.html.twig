@@ -14,29 +14,82 @@
         {% endfor %}
     </div>
 
-<div class="well">
+    <div class="well">
 
-  <div>
-  	<p>Prix total : {{ ticket.prixTotal}} eurs</p>
-    <p>Date de r&eacute;servation : {{ ticket.date|date('d-m-Y') }}</p>
-    <p>Email : {{ ticket.email}}</p>
-    {% if ticket.halfday %}
-     <p>Type de billet : demi-journ&eacute;e</p> 
-    {% else %}
-      <p>Type de billet : journ&eacute;e compl&egrave;te</p>
-    {% endif %}
-    <p>Nombre de personnes : {{ ticket.number}}</p>
-    {% set index = 1 %}
-     {% for visitor in ticket.visitors %}
-     	<h3>Visiteur{{index}}</h3>
-        <p>Nom : {{ visitor.firstname}}</p> 
-    	<p>prenom : {{ visitor.lastname}}</p> 
-    	<hr>
-    	{% set index = index+1 %}
-    {% endfor %}
-      {% set prix = ticket.prixTotal * 100 %}
-  </div>
-</div>
+
+        <table class="table table-bordered table-striped table-condensed">
+            <tbody>
+            <caption>
+                <h3>Votre commande</h3>
+            </caption>
+            <tr>
+                <td class="col_label"><h2>Prix du billet</h2></td>
+                <td class="col_champ"><h2>{{ ticket.prixTotal}} eurs</h2></td>
+            </tr>
+            <tr>
+                <td class="col_label">Ticket ID : </td>
+                <td class="col_champ">{{ ticket.ticketId }}</td>
+            </tr>
+            <tr>
+                <td class="col_label">Date de réservation</td>
+                <td class="col_champ">{{ ticket.date|date("d-m-Y") }}</td>
+            </tr>
+            <tr>
+                <td class="col_label">Email</td>
+                <td class="col_champ">{{ ticket.email }}</td>
+            </tr>
+            <tr>
+                <td class="col_label">Nombre de visiteurs</td>
+                <td class="col_champ">{{ ticket.number }}</td>
+            </tr>
+            <tr>
+                <td class="col_label">Type de billets</td>
+                <td class="col_champ">
+                    {% if ticket.halfday %}
+                        Demi-journ&eacute;e
+                    {% else %}
+                        Journ&eacute;e
+                    {% endif %}
+                </td>
+            </tr>
+            {% set index = 1 %}
+            {% for visitor in ticket.visitors %}
+                <tr>
+                    <td colspan=2 class="col_space_resume"></td>
+                </tr>
+                <tr>
+                    <td class="col_label"><b>Visiteur</b></td>
+                    <td class="col_champ"><b>{{index}}</b></td>
+                </tr>
+                <tr>
+                    <td class="col_label">Nom</td>
+                    <td class="col_champ">{{ visitor.firstname}}</td>
+                </tr>
+                <tr>
+                    <td class="col_label">Prenom</td>
+                    <td class="col_champ">{{ visitor.lastname}}</td>
+                </tr>
+                <tr>
+                    <td class="col_label">Date de naissance</td>
+                    <td class="col_champ">{{ visitor.birthdate|date("d-m-Y")}}</td>
+                </tr>
+                <tr>
+                    <td class="col_label">Tarif-réduit</td>
+                    <td class="col_champ">
+                        {% if visitor.halfprice %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                </tr>
+                {% set index = index+1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {% set prix = ticket.prixTotal * 100 %}
+    </div>
+
 
     <div id="status">
 

@@ -234,34 +234,12 @@ class Ticket
         $this->ticketId = md5(uniqid(rand(), true));
     }
 
-    //calcul du prix total des billets
-    public function calcPrixTotal()
-    {
-        $this->prixTotal=0;
-        foreach ($this->visitors as $visitor)
-        {
-            $age = $visitor->calcAge();
 
-            
-            if($age<4){$prix = 0;}
-            else if($age>=4 && $age<12){$prix = 8;}
-            else{
-                if($visitor->getHalfprice() === true){$prix=10;}
-                else{
-                    if($age>=12 && $age<=60){$prix = 16;}
-                    else if($age>60){$prix = 12;}
-                }
-            }
-            if($this->halfday === true){$prix = $prix/2;}
-            $this->prixTotal+=$prix;
-        }
-        return $this->prixTotal;
-    
-    }
     public function getPrixTotal()
     {
         return $this->prixTotal;
     }
+
     public function setPrixTotal($prixTotal)
     {
         $this->prixTotal = $prixTotal;
