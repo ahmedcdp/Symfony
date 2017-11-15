@@ -70,35 +70,7 @@ class TicketController extends Controller
         $session->set('etape3', $ticket);
         return $this->render('CDPBookingBundle:Ticket:resume.html.twig', array('ticket' =>$ticket));
   }
-
-/*
-    public function resumeAction(Request $request)
-    {
-        $session = $request->getSession();
-        if (!$session->has('etape2')) {
-            return $this->redirectToRoute('cdp_booking_new');
-        }
-        $ticket = $session->get('etape2');
-
-        $price = $this->get("cdp_booking.price");
-        $totalPrice = $price->calcTotalPrice();
-        $ticket->setPrixTotal($totalPrice);
-        if($totalPrice ===0){
-            $session->getFlashBag()->add('notice', 'Veuillez ajouter un adulte pour accompagner les enfants');
-            return $this->redirectToRoute('cdp_booking_new');
-        }
-        $session->set('etape3', $ticket);
-
-        $validPayment = $this->get("cdp_booking.validpayment");
-        $validPayment->save();
-        $validPayment->sendMail();
-        $title = "Confirmation de paiement";
-        $msg = "Payement validé, Nous vous remercions pour votre commande";
-        return $this->render('CDPBookingBundle:Ticket:save.html.twig', array('title' => $title, 'msg' => $msg, 'isOk' => true));
-    }
-
-
-*/
+    
 
   public function saveAction(Request $request)
   {
