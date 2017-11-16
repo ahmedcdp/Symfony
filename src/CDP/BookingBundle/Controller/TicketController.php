@@ -70,7 +70,7 @@ class TicketController extends Controller
         $session->set('etape3', $ticket);
         return $this->render('CDPBookingBundle:Ticket:resume.html.twig', array('ticket' =>$ticket));
   }
-    
+
 
   public function saveAction(Request $request)
   {
