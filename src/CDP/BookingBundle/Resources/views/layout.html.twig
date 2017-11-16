@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Musée du Louvre</title>
-  <meta charset="utf-8">
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -10,11 +10,15 @@
     body {
       background-color: #4583E5;
     }
+
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
         padding-left: 0px;
+    }
+    .text_index{
+        text-align: justify;
     }
     label {
       width: 50%;
@@ -55,6 +59,7 @@
     .corps {
       background-color: white;
       height: 100%;
+        padding: 20px;
     }
     .flash-notice{
     	background-color: green;
@@ -83,9 +88,6 @@
     .navbar-brand>img {
         height: 100%;
         padding: 0px;
-        width: 160px;
-    }
-    .lien_form{
         width: 160px;
     }
     form ul{
@@ -126,7 +128,40 @@
       color: #FFC44D;
     }
     /* On small screens, set height to 'auto' for sidenav and grid */
-    @media(max-width: 767px) {
+    @media(max-width: 991px) {
+        body{
+            font-size: 2em;
+        }
+        .logo{
+            width: 320px;
+            height: 100px;
+        }
+        .container {
+            padding-left: 15px;
+            padding-right: 15px;
+            width: inherit;
+        }
+        .navbar-header {
+            float: none;
+        }
+        .navbar-inverse{
+            float: none;
+            padding: 0px;
+        }
+        .navbar-nav {
+            float: none;
+            text-align: center;
+            width: 100%;
+            margin: 0px;
+        }
+        .navbar-nav>li {
+            float: none;
+        }
+        .navbar-nav>li>a {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
       .sidenav {
         height: auto;
         padding: 15px;
@@ -144,18 +179,17 @@
       .row.content {height:auto;} 
       header{display: none;}
     }
+
   </style>
 </head>
 <body>
 <nav class="container navbar navbar-inverse">
-    <div class="container-fluid">
-    <div class="navbar-header lien_logo">
+    <div class="navbar-header">
       <a class="navbar-brand" href={{ path('cdp_booking_homepage')}}><img class ="logo" src ="{{ asset('images/logo-louvre.jpg') }}" alt="logo"></a>
     </div>
       <ul class="nav navbar-nav">
-        <li class="active lien_form"><a href={{ path('cdp_booking_new')}}>Billetterie en ligne</a></li>
+        <li class="active"><a href={{ path('cdp_booking_new')}}>Billetterie en ligne</a></li>
       </ul>
-    </div>
   </nav>
 <header class="container bg-primary text-white">
   <div class="text-center">
@@ -164,13 +198,13 @@
   </div>
 </header>
 
-<div class="container text-center">    
+<div class="container text-center">
   <div class="row content">
-    <div class="col-sm-9 text-left corps"> 
+    <div class="col-sm-12 col-md-9 text-left corps">
     	{% block body %}
     	{% endblock %}
     </div>
-    <div class="col-sm-3 sidenav">
+    <div class="col-sm-12 col-md-3 sidenav">
       <div class="well cadre">
          <h2>Horaires</h2>
       	<p>Le musée est ouvert tous les jours
