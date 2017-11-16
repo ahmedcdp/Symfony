@@ -45,7 +45,7 @@ class ValidPayment
             ->setFrom($emailFrom)
             ->setTo($emailTo);
         $cid = $message->embed(\Swift_Image::fromPath('images/logo-louvre.jpg'));
-        $message->setBody($this->templating->renderResponse('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $this->ticket, 'cid'=>$cid)), 'text/html');
+        $message->setBody($this->templating->render('CDPBookingBundle:Emails:email.html.twig', array('ticket' => $this->ticket, 'cid'=>$cid)), 'text/html');
         $this->mailer->send($message);
     }
     public function valide()
